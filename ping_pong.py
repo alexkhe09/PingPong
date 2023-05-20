@@ -1,4 +1,5 @@
 from pygame import *
+from math import floor
 
 class GameSprite(sprite.Sprite): #Создаю класс GameSprite(наследник класса Sprite)
     def __init__(self, player_image, player_x, player_y, player_width, player_height, player_speed): #Создаю конструктор класса, передаю картинку спрайта, скорость, ширину, выстоу, x, y
@@ -42,10 +43,11 @@ class Ball(GameSprite):
             self.player_speed_x *= -1
 '''
 window = display.set_mode((700, 500))
+display.set_caption('Ping Pong')
 background = transform.scale(image.load('background.png'), (700, 500))
 ball = GameSprite('4892516.png', 300, 300, 55, 55, 5)
-racket_r = Player('images.png', 655, 200, 25, 75, 7)
-racket_l = Player('images.png', 20, 200, 25, 75, 7)
+racket_r = Player('racket.png', 655, 200, 25, 75, 7)
+racket_l = Player('racket.png', 20, 200, 25, 75, 7)
 speed_x = 5
 speed_y = 5
 font.init()
@@ -54,6 +56,7 @@ win_r = aaaaaa.render('ПРАВЫЙ ИГРОК ПОБЕДИЛ!', True, (255, 150
 win_l = aaaaaa.render('ЛЕВЫЙ ИГРОК ПОБЕДИЛ!', True, (255, 150, 0))
 game = True
 finish = False
+FPS = 30
 while game:
     for i in event.get():
         if i.type == QUIT:
@@ -68,6 +71,7 @@ while game:
             speed_y *= -1
         if sprite.collide_rect(racket_r, ball) or sprite.collide_rect(racket_l, ball):
             speed_x *= -1
+            FPS -= 0.5
 
         window.blit(background, (0, 0))
         ball.reset()
@@ -81,5 +85,5 @@ while game:
             finish = True
             window.blit(win_l, (100, 150))
 
-    time.delay(30)    
+    time.delay(floor(FPS))    
     display.update()
