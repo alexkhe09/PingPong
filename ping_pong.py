@@ -48,6 +48,10 @@ racket_r = Player('images.png', 655, 200, 25, 75, 7)
 racket_l = Player('images.png', 20, 200, 25, 75, 7)
 speed_x = 5
 speed_y = 5
+font.init()
+aaaaaa = font.SysFont('Arial', 48)
+win_r = aaaaaa.render('ПРАВЫЙ ИГРОК ПОБЕДИЛ!', True, (255, 150, 0))
+win_l = aaaaaa.render('ЛЕВЫЙ ИГРОК ПОБЕДИЛ!', True, (255, 150, 0))
 game = True
 finish = False
 while game:
@@ -64,11 +68,18 @@ while game:
             speed_y *= -1
         if sprite.collide_rect(racket_r, ball) or sprite.collide_rect(racket_l, ball):
             speed_x *= -1
-        
+
         window.blit(background, (0, 0))
         ball.reset()
         racket_l.reset()
         racket_r.reset()
 
-    time.delay(50)    
+        if ball.rect.x <= -55:
+            finish = True
+            window.blit(win_r, (100, 150))
+        if ball.rect.x >= 700:
+            finish = True
+            window.blit(win_l, (100, 150))
+
+    time.delay(30)    
     display.update()
